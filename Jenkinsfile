@@ -18,7 +18,7 @@ pipeline {
         
         stage('Build') {
             steps {
-                dir("/var/lib/jenkins/workspace/demopipelinetask/my-app"){              
+                dir("/var/lib/jenkins/workspace/demopipelinetask"){              
                 // inside your workspace folder by default.
                  'mvn -B -DskipTests clean package'
                 }
