@@ -1,10 +1,8 @@
 pipeline {
     agent any
-    
     tools {
-        // These names must match what you configured in Global Tool Configuration
-        maven "MAVEN" 
-        jdk "JDK"
+        maven 'Maven'   // must match the configured name
+      jdk "JDK"
     }
 
     stages {
@@ -20,7 +18,7 @@ pipeline {
             steps {
                 dir("/var/lib/jenkins/workspace/demopipelinetask"){              
                 // inside your workspace folder by default.
-                 'mvn -B -DskipTests clean package'
+                sh 'mvn -B -DskipTests clean package'
                 }
             }
         }
