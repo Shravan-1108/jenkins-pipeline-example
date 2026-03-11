@@ -1,24 +1,22 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven'   // must match the configured name
-      jdk "JDK"
+        maven 'Maven'   // must match Global Tool Config
+        jdk 'JDK'       // must match Global Tool Config
     }
 
     stages {
         stage('Initialize') {
             steps {
-                // On Windows, use 'bat' and Windows environment variable syntax
-                echo "PATH = ${M2_HOME}/bin:${PATH}"
-                echo "M2_HOME = /opt/maven"
+                echo "PATH = ${env.PATH}"
+                echo "M2_HOME = ${env.M2_HOME}"
             }
         }
         
         stage('Build') {
             steps {
-                dir("/var/lib/jenkins/workspace/demopipelinetask"){              
-                // inside your workspace folder by default.
-                sh 'mvn -B -DskipTests clean package'
+                dir("${WORKSPACE}") {
+                    bat 'mvn -B -DskipTests clean package'
                 }
             }
         }
@@ -26,10 +24,9 @@ pipeline {
     
     post {
         always {
-            // Updated pattern to standard Maven surefire report location
             junit(
                 allowEmptyResults: true, 
-                testResults: '*/test-reports/.xml'
+                testResults: 'target/surefire-reports/*.xml'
             )
         }
     }
